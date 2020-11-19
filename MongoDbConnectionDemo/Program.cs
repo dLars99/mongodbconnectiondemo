@@ -7,7 +7,11 @@ namespace MongoDbConnectionDemo
     {
         static void Main(string[] args)
         {
-            MongoClient dbClient = new MongoClient("mongodb+srv://dLars99:rL4ypGkObW75x0nO@cluster0.yivaw.mongodb.net/sample_airbnb?retryWrites=true&w=majority");
+            var un = "dLars99";
+            var x = ":rL4ypGkObW75x0nO@cluster0";
+            var db = "sample_airbnb";
+
+            MongoClient dbClient = new MongoClient($"mongodb+srv://{un}{x}.yivaw.mongodb.net/{db}?retryWrites=true&w=majority");
 
             var dbList = dbClient.ListDatabases().ToList();
 
