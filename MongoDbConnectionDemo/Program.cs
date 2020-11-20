@@ -75,6 +75,34 @@ namespace MongoDbConnectionDemo
             var highestScores = collection.Find(highExamScoreFilter).Sort(sort);
             // Append .First() to get the top result
             var highestScore = collection.Find(highExamScoreFilter).Sort(sort).First();
+
+            // UPDATE
+            // Find the record to update
+            filter = Builders<BsonDocument>.Filter.Eq("student_id", 10000);
+            // Set the updated field
+            var update = Builders<BsonDocument>.Update.Set("class_id", 483);
+            // Make the change to the collection
+            collection.UpdateOne(filter, update);
+
+            // Match multiple records as an array
+            var arrayFilter = Builders<BsonDocument>.Filter.Eq("student_id", 10000) & Builders<BsonDocument>.Filter.Eq("scores.type", "quiz");
+            // Set the specific item using the positional $ operator
+            var arrayUpdate = Builders<BsonDocument>.Update.Set("scores.$.score", 84.92381029342834);
+            // Complete the update
+            collection.UpdateOne(arrayFilter, arrayUpdate);
+
+            // DELETE
+            // Filter the record to delete
+            var deleteFilter = Builders<BsonDocument>.Filter.Eq("student_id", 10000);
+            // Then, delete it
+            collection.DeleteOne(deleteFilter);
+
+            // Multiple deletes - drop all students with exams containing a score which is less than 60
+            var deleteLowExamFilter = Builders<BsonDocument>.Filter.ElemMatch<BsonValue>("scores",
+                new BsonDocument { { "type", "exam" }, { "score", new BsonDocument { { "$lt", 60 } } }
+            });
+
+            collection.DeleteMany(deleteLowExamFilter);
         }
     }
 }
