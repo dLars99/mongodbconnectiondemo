@@ -13,10 +13,10 @@ namespace MongoDbConnectionDemo
             var pw = "";
             var connDb = "sample_training";
 
-            MongoClient dbClient = new MongoClient($"mongodb+srv://{un}{pw}@cluster0.yivaw.mongodb.net/{connDb}?retryWrites=true&w=majority");
+            MongoClient dbClient = new MongoClient($"mongodb+srv://{un}:{pw}@cluster0.yivaw.mongodb.net/{connDb}?retryWrites=true&w=majority");
 
             var dbList = dbClient.ListDatabases().ToList();
-
+             
             Console.WriteLine("The list of the databases on this server is: ");
             foreach (var db in dbList)
             {
